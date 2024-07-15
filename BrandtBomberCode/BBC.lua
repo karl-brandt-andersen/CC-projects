@@ -9,17 +9,19 @@ local location = {x=-40, y=200, z=-105}
 local pos = {x=0, y=0, z=0}
 
 -- Get the GPS location
-local x, y, z = gps.locate(2, false)
+local x,y,z = gps.locate(2, false)
 
-if x and y and z then
-    pos = {x=x, y=y, z=z}
+if (x and y and z) then
+    pos.x = x
+    pos.y = y
+    pos.z = z
+    print("Turtle coordinates: x=" .. pos.x .. ", y=" .. pos.y .. ", z=" .. pos.z)
 else
     print("Failed to locate GPS coordinates")
     return
 end
 
--- Print the coordinates
-print("Coordinates: x=" .. pos.x .. ", y=" .. pos.y .. ", z=" .. pos.z)
+
 
 -- Move turtle along the x-axis
 if pos.x > location.x then
