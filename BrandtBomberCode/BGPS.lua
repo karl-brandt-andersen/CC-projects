@@ -1,17 +1,10 @@
 
-local target = {x=-40, y=200, z=-105}  --target
-
-
-
-
 --Code to go from turtle position, to target position
 
 -- function getOrientation      "compass"
 -- move(amount of blocks, direction)       "dig if anything is in the way of the direction"
 -- log()
 
-print(getGPS())
-print(getOrientation())
 
 function log()
 
@@ -27,15 +20,14 @@ end
 
 function getGPS()
 
-    local pos = {x=0, y=0, z=0} --turtle position
+    local x,y,z = gps.locate(2, false)
 
-    pos = gps.locate(2, false)
-
-    if (pos) then
-        return(pos)    
+    if (x and y and z) then
+        print("gps:" .. x .. " " .. y .. " " .. z)
+        return x,y,z    
     else
         print("Failed to locate GPS coordinates")
-        return
+        return nil, nil, nil
     end
     
 end
@@ -44,14 +36,18 @@ function getOrientation()
 
     local posMem1 = {x=0, y=0, z=0}
     local posMem2 = {x=0, y=0, z=0}
-    local ret = "no GPS"
+    local ret = ""
 
-    posMem1 = getGPS()
+    posMem1.x, posMem1.y, posMem1.z = getGPS()
+    print("Test 1 " .. posMem1.x .. " " .. posMem1.y .. " " .. posMem1.z)
 
+    turtle.forward() --change to move
+    turtle.forward()
     turtle.forward()
 
-    posMem2 = getGPS()
-    
+    posMem2.x, posMem2.y, posMem2.z = getGPS()
+    print("Test 2 " .. posMem2.x .. " " .. posMem2.y .. " " .. posMem2.z)
+
     if (posMem1.x > posMem2.x) then
         ret = "x"
     elseif (posMem1.x < posMem2.x) then
@@ -60,10 +56,18 @@ function getOrientation()
         ret = "z"
     elseif (posMem1.z < posMem2.z) then
         ret = "-z"
+    else then
+        ret = "Error orientation"
     end
 
+    turtle.back()
+    turtle.back()
     turtle.back()
 
     return(ret)
 end
 
+local a, b, c = getGPS()
+
+print(a .. " " .. b .. " " .. c)
+print(getOrientation())
